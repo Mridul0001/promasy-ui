@@ -1,0 +1,88 @@
+.addNewProject{
+    width: 100%;
+}
+
+.newProjectForm{
+    width:100%;
+    min-height: calc(100vh - 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.newProjectFormInner{
+    width: 70%;
+}
+
+.newProjectFields{
+    margin-top: 15px !important;
+}
+
+.createNewProject{
+    margin-top: 15px !important;
+}
+
+.closeButton{
+    position: absolute !important;
+    top:15%;
+    right: 10%;
+}
+
+.loader{
+    max-width: 100%;
+    min-height: calc(100vh - 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.projectDisplayHeader{
+    display: flex;
+    margin-top: 10px;
+    padding: 20px;
+}
+
+.projectTitle{
+    line-height: 0;
+}
+
+.addTaskButton{
+    margin-left: auto;
+}
+
+.taskList{
+    padding-right: 10px;
+    padding-left: 20px;
+}
+
+.taskTitle{
+    max-width: 30% !important;
+    min-width: 30% !important;
+}
+
+.assignedTo{
+    min-width: 15%;
+}
+
+.status{
+    min-width: 15%;
+    margin-left: 50px;
+}
+
+.taskListItem{
+    border-bottom: 0.5px solid #ABACAC;
+}
+
+.displayProjects{
+    max-height: calc(100vh - 50px);
+}
+
+.taskListBottomBar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.taskUpdateButton{
+    margin-right: 10px !important;
+}

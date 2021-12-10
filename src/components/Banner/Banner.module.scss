@@ -1,0 +1,56 @@
+.Banner {
+    background-color: #F9FAFB;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    overflow: hidden;
+    height: 50px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.logo {
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logoContainer {
+    margin-left: 10px;
+    margin-top: 11px;
+}
+
+.textButton{
+    background: none!important;
+    border: none;
+    color: #5272ffe5;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+}
+
+.textButton:hover{
+    animation: hoveranim 0.5s forwards;
+}
+
+.navbar {
+    position: absolute;
+    top:50%;
+    right: 1%;
+    -webkit-transform: translate(-1%,-50%);
+    transform: translate(-1%,-50%);
+    a{
+        text-decoration: none;
+        padding: 10px;
+        color: #5272ffe5;
+    }
+
+    a:hover{
+        animation: hoveranim 0.5s forwards;
+    }
+}
+
+@keyframes hoveranim {
+    0% {color: #5272ffe5;}
+    100% {color: #5272ff}
+}

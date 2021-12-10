@@ -1,0 +1,8 @@
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;300;400&display=swap');
+
+body {
+  background-color: #F9FAFB;
+  font-family: 'Work Sans', sans-serif;
+  margin: 0;
+}
