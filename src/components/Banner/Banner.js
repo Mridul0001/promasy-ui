@@ -71,7 +71,7 @@ const Banner = () => {
     const ui_url = process.env.REACT_APP_PROMASY_UI_URL;
     axios.post(url+"v1/adduser", body).then((res)=>{
       template.message = ui_url+"/signup?referral="+CURRENTUSER.userId+"currUser="+res.data.userId;
-      emailjs.send(SERVICE_ID,TEMPLATE_ID,templateParams,USER_ID).then((res)=>{
+      emailjs.send(SERVICE_ID,TEMPLATE_ID,template,USER_ID).then((res)=>{
         setEmailSentStatus(true);
         setTemplateParams({
           to_email:"",
