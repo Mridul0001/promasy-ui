@@ -4,11 +4,12 @@ import Visibility from '@mui/icons-material/Visibility';
 import { FormHelperText, FormControl, FormControlLabel, Switch } from '@mui/material';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import P from '../../assets/P.png';
-import styles from './Home.module.scss';
 import { IconButton, InputAdornment } from '@mui/material';
 import useAuth from '../helpers/Login';
 import { sha512 } from 'js-sha512';
 import { LoadingButton } from '@mui/lab';
+import styles from './Home.module.scss';
+import { Login } from '@mui/icons-material';
 
 const Home = () => {
   const [values, setValues] = React.useState({
@@ -20,8 +21,6 @@ const Home = () => {
 
   const {login} = useAuth();
 
-  const [isAdminLogin, setAdminLogin] = React.useState(false);
-
   const [error, setError] = React.useState({
     hasError:false,
     errorText:""
@@ -30,6 +29,7 @@ const Home = () => {
   const [loading,setLoading] = React.useState(false);
 
   const handleChange = (props) => (event) => {
+    setError({hasError:false,errorText:""});
     setValues({...values, [props]:event.target.value})
   }
   const handleClickShowPassword = () => {
@@ -43,15 +43,28 @@ const Home = () => {
     event.preventDefault();
   }
 
+  const setLoginParams = (data) => {
+    localStorage.setItem("isAdmin",data.admin);
+    localStorage.setItem("user",data.user);
+    localStorage.setItem("userId",data.userId);
+    localStorage.setItem("auth",true);
+  }
   const handleUserLogin = (event) => {
     event.preventDefault();
+    setLoading(true);
     //TODO: check accuracy of password and email
     var encryptedPass = sha512(values.password);
-    login(isAdminLogin,values.email,encryptedPass);
-  }
-
-  const handleAdminButton = () => {
-    setAdminLogin(!isAdminLogin);
+    login(values.email,encryptedPass).then((res)=>{
+      setLoginParams(res.data);
+      setLoading(false);
+      window.location = "/dashboard";
+    },(error)=>{
+      setLoading(false);
+      setError({
+        hasError:true,
+        errorText:error.error
+      })
+    });
   }
 
   const handleForgotPassword = () => {
@@ -78,14 +91,13 @@ const Home = () => {
     <div className={styles.login} data-testid="login">
       <div className={styles.logoContainer}><img src={P} alt="promasy-logo" width="64px" height="64px" className={styles.logo}/></div>
       <form onSubmit={handleUserLogin} className={styles.loginForm}>
-        <FormControlLabel className={styles.adminSwitch} control={<Switch checked={isAdminLogin} onChange={handleAdminButton}/>} label="Admin Login" labelPlacement="start"/>
         <FormControl
           error={error.hasError}
           variant="standard"
           className={styles.loginForm}
         >
-          <TextField className={styles.loginFields} onChange={handleChange('email')} value={values.email} fullWidth label="Email" id="login-email" />
-          <TextField className={styles.loginFields} type={values.showPassword ? 'text' : 'password'} onChange={handleChange('password')} value={values.password} fullWidth label="Password" id="login-password" 
+          <TextField required className={styles.loginFields} onChange={handleChange('email')} value={values.email} fullWidth label="Email" id="login-email" />
+          <TextField required className={styles.loginFields} type={values.showPassword ? 'text' : 'password'} onChange={handleChange('password')} value={values.password} fullWidth label="Password" id="login-password" 
             InputProps={{endAdornment:
               <InputAdornment position="end">
                 <IconButton
@@ -100,7 +112,7 @@ const Home = () => {
             }}
           />
           <FormHelperText>{error.errorText}</FormHelperText>
-          <LoadingButton loading={loading} loadingPosition="start" className={styles.loginFields} fullWidth variant="contained" disabled={false} type="submit">Login</LoadingButton>
+          <LoadingButton loading={loading} loadingPosition="start" startIcon={<Login />} className={styles.loginFields} fullWidth variant="contained" disabled={false} type="submit">Login</LoadingButton>
         </FormControl>
       </form>
       <button className={styles.textButton} onClick={handleForgotPassword}>Forgot Password?</button>

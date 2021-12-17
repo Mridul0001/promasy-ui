@@ -56,17 +56,49 @@
 }
 
 .taskTitle{
-    max-width: 30% !important;
+    display: inline-block;
     min-width: 30% !important;
+    max-width: 30% !important;
+}
+
+.listItemsContainer{
+    width: 100%;
 }
 
 .assignedTo{
-    min-width: 15%;
+    display: inline-block;
+    min-width: 20%;
+    max-width: 20%;
+    margin-left: 30px;
+}
+
+.addTaskPopup{
+    background-color: white;
+    padding: 20px;
+    border: 0.5px solid #BEBFBF;
+    border-radius: 4px;
+    max-width: 300px !important;
+}
+
+.addTaskSelect{
+    margin-top: 15px !important;
+}
+
+.saveTaskButton{
+    display: inline-block !important;
+    margin-top: 10px !important;
+    width: 100% !important;
+}
+
+.newUserEmailLink{
+    margin-top: 10px;
 }
 
 .status{
-    min-width: 15%;
-    margin-left: 50px;
+    display: inline-block;
+    min-width: 20%;
+    max-width: 20%;
+    margin-left: 30px;
 }
 
 .taskListItem{
@@ -74,15 +106,43 @@
 }
 
 .displayProjects{
-    max-height: calc(100vh - 50px);
+    max-height: calc(100vh - 150px);
 }
 
-.taskListBottomBar{
+.projectSaveStatusDialog{
+    margin: auto;
+    max-width: 50%;
+}
+
+.noTaskMessage{
+    width: 100%;
+    height: calc(100vh - 300px);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.taskUpdateButton{
-    margin-right: 10px !important;
+.tasksHeader{
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.taskHeaderTitle{
+    display: inline-block;
+    min-width: 30% !important;
+    max-width: 30% !important;
+}
+
+.taskHeaderUser{
+    display: inline-block;
+    min-width: 20% !important;
+    max-width: 20% !important;
+    margin-left: 30px;
+}
+
+.taskHeaderStatus{
+    display: inline-block;
+    min-width: 20% !important;
+    max-width: 20% !important;
+    margin-left: 30px;
 }

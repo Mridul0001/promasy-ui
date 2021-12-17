@@ -1,2 +1,2 @@
-const CURRENTUSER = {isAdmin:true,user:"Mridul"}
-export default CURRENTUSER;
+const STATUSES = ["Defined","In Progress","Completed"];
+export default STATUSES;

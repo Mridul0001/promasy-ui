@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Dashboard.module.scss';
 import Banner from '../Banner/Banner';
-import { Button, Divider, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { Button, CircularProgress, Divider, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import CURRENTUSER from '../../global/GlobalVars';
 import Project from '../Project/Project';
 import { FixedSizeList } from 'react-window';
+import axios from 'axios';
 
 function renderRow(props) {
   const { index,  style, data} = props;
@@ -20,72 +20,52 @@ function renderRow(props) {
 
 
 const Dashboard = () => {
-  const [projects, setLists] = React.useState([
-    {
-      title:"Project Title 1",
-      projectId: 1
-    },
-    {
-      title:"Project Title 2",
-      projectId: 2
-    },
-    {
-      title:"Project Title 3",
-      projectId: 3
-    },
-    {
-      title:"Project Title 4",
-      projectId: 4
-    }
-  ]);
-
-  const tasks = [
-    {
-      taskId:1,
-      taskTitle:"Task 1",
-      assignedTo: "Mridul",
-      status: "In Progress"
-    },
-    {
-      taskId:2,
-      taskTitle:"Task 2",
-      assignedTo: "Sahil",
-      status: "In Progress"
-    },
-    {
-      taskId:3,
-      taskTitle:"Task 3",
-      assignedTo: "Mridul",
-      status: "In Progress"
-    },
-    {
-      taskId:4,
-      taskTitle:"Task 4",
-      assignedTo: "Shray",
-      status: "In Progress"
-    }
-  ]
-
-  const members = ["Mridul","Sahil","Shray"];
-
-  const statuses = ["Defined","In Progress","Completed"];
-
-  const [selectedProject, setProject] = React.useState(projects[0]);
-
+  const [projects, setLists] = React.useState([]);
+  const [projectsLoading, setProjectsLoading] = React.useState(true);
+  const CURRENTUSER = {isAdmin:localStorage.getItem("isAdmin"),user:localStorage.getItem("user"),userId:localStorage.getItem("userId")};
+  const [members,setMembers] = React.useState([]);
+  const [selectedProject, setProject] = React.useState({});
   const [newProjectWindow, setProjectWindow] = React.useState(false);
-
-  const [fetchingProject, setProjectLoading] = React.useState(false);
-
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const url = process.env.REACT_APP_PROMASY_API_URL;
+  useEffect(()=>{
+    axios.get(url+"v1/associatedprojects/"+CURRENTUSER.userId).then((res)=>{
+      setLists([...res.data]);
+      axios.get(url+"v1/getusers/"+CURRENTUSER.userId+"/"+CURRENTUSER.user).then((resInternal)=>{
+        setMembers([...resInternal.data]);
+      },(error)=>{
+        setProjectsLoading(false);
+        console.log(error);
+      })
+    },(error)=>{
+      setProjectsLoading(false);
+      console.log(error);
+    })
+  }, []);
+
+  useEffect(()=>{
+    setProject({...projects[0]});
+  }, [projects]);
+
+  useEffect(()=>{
+    setProjectsLoading(false);
+  }, [selectedProject])
 
   const showProjectDesc = (i) => {
-    setProjectLoading(true);
-    setTimeout(()=>{
-      setSelectedIndex(i);
-      setProjectWindow(false);
-      setProject(projects[i]);
-      setProjectLoading(false);
-    },3000)
+    setSelectedIndex(i);
+    setProjectWindow(false);
+  }
+
+  const changeProject = (i) => {
+    showProjectDesc(i);
+    setProject(projects[i]);
+  }
+
+  const addNewProject = (newProject) => {
+    let tempProjects = [...projects];
+    tempProjects.push({projectId:newProject.projectId,title:newProject.title});
+    setLists([...tempProjects]);
+    showProjectDesc(0);
   }
 
   const switchProjectWindow = () => {
@@ -95,17 +75,23 @@ const Dashboard = () => {
   return  (
     <div>
       <Banner />
-      <div className={styles.Dashboard}>
+      {
+        projectsLoading ? <div className={styles.loader}>
+          <CircularProgress className={styles.progressBar} color="secondary"/>
+        </div>:<div className={styles.Dashboard}>
         <div className={styles.projects}>
-          {CURRENTUSER.isAdmin?<Button disabled={newProjectWindow} className={styles.newProject} startIcon={<Add/>} variant="contained" onClick={switchProjectWindow}>New Project</Button>:""}
-          <FixedSizeList itemCount={projects.length} height={400} itemSize={46} overscanCount={5} itemData={{projects:projects,onClick:showProjectDesc,selected:selectedIndex}}>
+          {CURRENTUSER.isAdmin==='true'?<Button disabled={newProjectWindow} className={styles.newProject} startIcon={<Add/>} variant="contained" onClick={switchProjectWindow}>New Project</Button>:""}
+          <FixedSizeList itemCount={projects.length} height={400} itemSize={46} overscanCount={5} itemData={{projects:projects,onClick:changeProject,selected:selectedIndex}}>
             {renderRow}
           </FixedSizeList>
         </div>
         <div className={styles.projectDesc}>
-            <Project isNew={newProjectWindow} fetchingProject={fetchingProject} handleCloseWindow={switchProjectWindow} tasks={tasks} members={members} statuses={statuses} project={selectedProject}></Project>
+          {
+            projects.length===0 && !newProjectWindow?<div className={styles.nothingText}>Nothing to show here</div>:<Project isNew={newProjectWindow} handleCloseWindow={switchProjectWindow} members={members} project={selectedProject} addNewProject={addNewProject}></Project>
+          }
         </div>
       </div>
+      }
     </div>
   );
 }
