@@ -1,3 +1,13 @@
+# Promasy - Project Management System (UI)
+This project is the frontend for Promasy app. It is created in ReactJS.
+- Admins have elevated access such as adding projects and adding new users to system.
+- Non admin users can will automatically be added to projects if there is even one task assinged to them
+- Can change assigned user and task status
+- Can add or delete tasks
+
+The UI can be accessed by going to following link:
+[Promasy UI](https://promasy-ui.herokuapp.com/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
