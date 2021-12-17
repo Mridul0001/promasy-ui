@@ -21,11 +21,23 @@
     background-color: black;
 }
 
-.inactiveProject{
-
+.loader{
+    max-width: 100%;
+    min-height: calc(100vh - 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .newProject{
     width: 80%;
     margin: 20px !important;
+}
+
+.nothingText{
+    width: 100%;
+    height: calc(100vh - 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
